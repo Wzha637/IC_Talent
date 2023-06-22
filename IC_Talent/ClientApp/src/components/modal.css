@@ -1,0 +1,42 @@
+﻿#modal {
+    width: 400px;
+    height: 300px;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    overflow: auto;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    border-radius: 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border:2px solid black;
+}
+
+.input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top:10px;
+}
+.input:focus {
+    outline: none;
+    border-color: #4c9aff;
+    box-shadow: 0 0 8px #4c9aff;
+
+}
+
+
+.btn {
+    margin-top:10px;
+}
+
+.btn-danger {
+    margin-left:5px;
+}
