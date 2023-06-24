@@ -7,7 +7,10 @@ export class Customer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { customers: [], loading: true, createModal: false, editModal:false };
+        this.openEditModalHandler = this.openEditModalHandler.bind(this);
+        this.closeEditModalHandler = this.closeEditModalHandler.bind(this);
+        this.state = {
+            customers: [], loading: true, createModal: false, editModal: false, customer: {id:0,name:'',address:''} };
     }
 
     componentDidMount() {
@@ -36,7 +39,16 @@ export class Customer extends Component {
                             <td>{customer.name}</td>
                             <td>{customer.address}</td>
                             <td>
-                                <button className="btn btn-success" onClick={this.openEditModalHandler}>Edit</button>
+                                <button className="btn btn-success" onClick={(customer) => {
+                                    this.openEditModalHandler();
+                                    this.setState({
+                                        ...this.state, customer: {
+                                            id: customer.id,
+                                            name: customer.name,
+                                            address: customer.address
+                                        }
+                                    })
+                                }}>Edit</button>
                             </td>
                             <td>
                                 <button className="btn btn-danger" onClick={(e) => {
@@ -70,8 +82,8 @@ export class Customer extends Component {
         return (
             <div>
                 <h1 id="tabelLabel" >Customer</h1>
-                {this.state.createModal ? <CustomerModal onCancel={this.closeCreateModalHandler} /> : ''}
-                {this.state.editModal ? <CustomerModal onCancel={this.closeEditModalHandler} /> : ''}
+                {this.state.createModal ? <CustomerModal onCancel={this.closeCreateModalHandler} method={"POST"} customer={this.state.customer} /> : ''}
+                {this.state.editModal ? <CustomerModal onCancel={this.closeEditModalHandler} method={"UPDATE"} customer={this.state.customer } /> : ''}
                 <button type="button" className="btn btn-primary" onClick={this.openCreateModalHandler}>Create New Customer</button>
                 {contents}
             </div>

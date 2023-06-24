@@ -18,8 +18,9 @@ export class CustomerModal extends Component {
     submitHandler = (e) => {
         e.preventDefault();
         this.props.onCancel();
-        fetch('api/Customers', {
-            method: "POST",
+        fetch('https://localhost:7166/api/Customers', {
+            method: this.props.method,
+            mode :'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -41,10 +42,10 @@ export class CustomerModal extends Component {
                 <form>
                     <h2>Create New Customer</h2>
                     <div>
-                        <input type="text" name="name" className="input" placeholder="Name..." value={name} onChange={this.changeHandler}></input>
+                        <input type="text" name="name" className="input" placeholder="Name..." value={this.props.customer.name == '' ? this.state.name : this.props.customer.name} onChange={this.changeHandler}></input>
                     </div>
                     <div>
-                        <input type="text" name="address" className="input" placeholder="Address..." value={address} onChange={this.changeHandler}></input>
+                        <input type="text" name="address" className="input" placeholder="Address..." value={this.props.customer.address == '' ? this.state.address : this.props.customer.adress} onChange={this.changeHandler}></input>
                     </div>
                     <button type="submit" className="btn btn-success" onClick={this.submitHandler}>Create</button>
                     <button type="button" className="btn btn-danger" onClick={this.props.onCancel}>Close</button>
