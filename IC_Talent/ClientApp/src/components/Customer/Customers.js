@@ -1,6 +1,6 @@
 ﻿import React, { Component, useState } from 'react';
 import { CustomerModal } from './CustomerModal';
-import './modal.css'
+import '../modal.css'
 
 export class Customer extends Component {
     static displayName = Customer.name;

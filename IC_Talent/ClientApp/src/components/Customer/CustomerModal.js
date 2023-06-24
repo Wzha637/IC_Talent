@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import './modal.css';
+import '../modal.css';
 
 export class CustomerModal extends Component {
     constructor(props) {
