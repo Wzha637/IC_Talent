@@ -1,16 +1,25 @@
 ﻿import React, { Component } from 'react';
+import { ProductModal } from './ProductModal'
+import '../modal.css'
 
 export class Product extends Component {
     static displayName = Product.name;
 
     constructor(props) {
         super(props);
-        this.state = { products: [], loading: true };
+        this.openEditModalHandler = this.openEditModalHandler.bind(this);
+        this.closeEditModalHandler = this.closeEditModalHandler.bind(this);
+        this.state = { products: [], loading: true, createModal: false, editModal: false, product: { id: 0, name: '', price: undefined } };
     }
 
     componentDidMount() {
         this.populateProductData();
     }
+
+    openCreateModalHandler = () => this.setState({ ...this.state, createModal: true })
+    closeCreateModalHandler = () => this.setState({ ...this.state, createModal: false })
+    openEditModalHandler = () => this.setState({ ...this.state, editModal: true })
+    closeEditModalHandler = () => this.setState({ ...this.state, editModal: false })
 
     static renderProductTable(products) {
         return (
@@ -29,10 +38,24 @@ export class Product extends Component {
                             <td>{product.name}</td>
                             <td>{product.price}</td>
                             <td>
-                                <button className="btn btn-success" onClick={(id) => this.handleEdit(product.id)}>Edit</button>
+                                <button className="btn btn-success" onClick={(product) => {
+                                    this.openEditModalHandler();
+                                    this.setState({
+                                        ...this.state, product: {
+                                            id: product.id,
+                                            name: product.name,
+                                            address: product.price
+                                        }
+                                    })
+                                }}>Edit</button>
                             </td>
                             <td>
-                                <button className="btn btn-danger" onClick={(id) => this.handleDelete(product.id)}>Delete</button>
+                                <button className="btn btn-danger" onClick={async (e) => {
+                                    e.preventDefault();
+                                    const response = await fetch(`https://localhost:7166/api/Products/${product.id}`, { method: "DELETE" });
+                                    const data = await response.json();
+                                    console.log(data);
+                                }}>Delete</button>
                             </td>
                         </tr>
                     )}
@@ -40,6 +63,8 @@ export class Product extends Component {
             </table>
         );
     }
+
+ 
 
     render() {
         let contents = this.state.loading
@@ -49,6 +74,9 @@ export class Product extends Component {
         return (
             <div>
                 <h1 id="tabelLabel" >Product</h1>
+                {this.state.createModal ? <ProductModal onCancel={this.closeCreateModalHandler} method={"POST"} product={this.state.product} /> : ''}
+                {this.state.editModal ? <ProductModal onCancel={this.closeEditModalHandler} method={"UPDATE"} product={this.state.product} /> : ''}
+                <button type="button" className="btn btn-primary" onClick={this.openCreateModalHandler}>Create New Product</button>
                 {contents}
             </div>
         );

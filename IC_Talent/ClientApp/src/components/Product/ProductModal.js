@@ -1,13 +1,13 @@
 ﻿import React, { Component } from 'react';
 import '../modal.css';
 
-export class CustomerModal extends Component {
+export class ProductModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             id: 99,
             name: '',
-            address: ''
+            price: undefined
         };
     }
 
@@ -18,7 +18,7 @@ export class CustomerModal extends Component {
     submitHandler = (e) => {
         e.preventDefault();
         this.props.onCancel();
-        fetch('https://localhost:7166/api/Customers', {
+        fetch('https://localhost:7166/api/Products', {
             method: this.props.method,
             mode :'no-cors',
             headers: {
@@ -27,7 +27,7 @@ export class CustomerModal extends Component {
             body:JSON.stringify({
                 id: this.state.id,
                 name: this.state.name,
-                address: this.state.address,
+                price: this.state.price
             })
         })
             .then(res => res.json())
@@ -39,12 +39,12 @@ export class CustomerModal extends Component {
             <div id="modal">
                 <div id="overlay"></div>
                 <form>
-                    <h2>Create New Customer</h2>
+                    <h2>Create New Product</h2>
                     <div>
-                        <input type="text" name="name" className="input" placeholder="Name..." value={this.props.customer.name == '' ? this.state.name : this.props.customer.name} onChange={this.changeHandler}></input>
+                        <input type="text" name="name" className="input" placeholder="Name..." value={this.props.product.name == '' ? this.state.name : this.props.product.name} onChange={this.changeHandler}></input>
                     </div>
                     <div>
-                        <input type="text" name="address" className="input" placeholder="Address..." value={this.props.customer.address == '' ? this.state.address : this.props.customer.adress} onChange={this.changeHandler}></input>
+                        <input type="text" name="price" className="input" placeholder="Price..." value={this.props.product.address == '' ? this.state.price : this.props.product.price} onChange={this.changeHandler}></input>
                     </div>
                     <button type="submit" className="btn btn-success" onClick={this.submitHandler}>Create</button>
                     <button type="button" className="btn btn-danger" onClick={this.props.onCancel}>Close</button>

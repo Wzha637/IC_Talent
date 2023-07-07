@@ -1,4 +1,4 @@
-﻿import React, { Component, useState } from 'react';
+﻿import React, { Component } from 'react';
 import { CustomerModal } from './CustomerModal';
 import '../modal.css'
 
@@ -19,7 +19,7 @@ export class Customer extends Component {
 
     openCreateModalHandler = () => this.setState({ ...this.state, createModal: true })
     closeCreateModalHandler = () => this.setState({ ...this.state, createModal: false })
-    openEditModalHandler = () => this.setState({ ...this.state, editModal: true })
+    openEditModalHandler = () => this.setState({ ...this.state, editModal: true }) 
     closeEditModalHandler = () => this.setState({ ...this.state, editModal: false })
 
     static renderCustomerTable(customers) {
@@ -51,21 +51,12 @@ export class Customer extends Component {
                                 }}>Edit</button>
                             </td>
                             <td>
-                                <button className="btn btn-danger" onClick={(e) => {
-                                    fetch(`api/Customers/${customer.id}`, {
-                                        method: "DELETE"
-                                    })
-                                        .then(response => {
-                                            if (response.ok) {
-                                                console.log('Delete request successful');
-                                                // Handle successful deletion here
-                                            } else {
-                                                console.error('Delete request failed');
-                                                // Handle deletion failure here
-                                            }
-                                        })
-                                }
-                                }>Delete</button>
+                                <button className="btn btn-danger" onClick={async(e) => {
+                                    e.preventDefault();
+                                    const response = await fetch(`https://localhost:7166/api/Customers/${customer.id}`, { method: "DELETE" });
+                                    const data = await response.json();
+                                    console.log(data);
+                                }}>Delete</button>
                             </td>
                         </tr>
                     )}
@@ -83,7 +74,7 @@ export class Customer extends Component {
             <div>
                 <h1 id="tabelLabel" >Customer</h1>
                 {this.state.createModal ? <CustomerModal onCancel={this.closeCreateModalHandler} method={"POST"} customer={this.state.customer} /> : ''}
-                {this.state.editModal ? <CustomerModal onCancel={this.closeEditModalHandler} method={"UPDATE"} customer={this.state.customer } /> : ''}
+                {this.state.editModal ? <CustomerModal onCancel={this.closeEditModalHandler} method={"UPDATE"} customer={this.state.customer} /> : ''}
                 <button type="button" className="btn btn-primary" onClick={this.openCreateModalHandler}>Create New Customer</button>
                 {contents}
             </div>
